@@ -44,31 +44,15 @@ We offer 5 cross-platform mobile applications to integrate a circular waste mana
   - [Project Summary](#project-summary)
   - [Problem](#problem)
   - [Solution Description](#solution-description)
-  - [Table of Contents](#table-of-contents)
   - [Demo](#demo)
-    - [Electronic board](#electronic-board)
-    - [Nema moving test](#nema-moving-test)
-    - [Smart bin look](#smart-bin-look)
-    - [Participants Login \& Coupons Catalog](#participants-login--coupons-catalog)
-    - [Participants Metrics \& Map](#participants-metrics--map)
-    - [HMI Android Tablet](#hmi-android-tablet)
   - [Architecture](#architecture)
   - [System Flow](#system-flow)
   - [Features](#features)
   - [Repository Structure](#repository-structure)
   - [Tech Stack](#tech-stack)
-    - [Firmware](#firmware)
-    - [Backend](#backend)
-    - [Mobile apps](#mobile-apps)
   - [Hardware](#hardware)
-    - [Components](#components)
   - [My Contribution](#my-contribution)
   - [Technical Challenges](#technical-challenges)
-    - [Limited GPIO Availability](#limited-gpio-availability)
-    - [Material Detection Reliability](#material-detection-reliability)
-    - [Thermal Constraints](#thermal-constraints)
-    - [Wifi Signal](#wifi-signal)
-    - [Ilumination](#ilumination)
   - [Security Considerations](#security-considerations)
   - [Results](#results)
   - [Lessons Learned](#lessons-learned)
@@ -83,7 +67,7 @@ We offer 5 cross-platform mobile applications to integrate a circular waste mana
 
 ### Nema moving test
 
-<video controls src="docs/videos/nema-test.mp4" title="Nema moving test"></video>
+![Nema moving test](docs/videos/nema-test.mp4)
 
 ### Smart bin look
 
