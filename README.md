@@ -83,7 +83,7 @@ We offer 5 cross-platform mobile applications to integrate a circular waste mana
 
 ### Nema moving test
 
-<video controls src="docs/videos/nema-test.mp4" title="Nema moving test"></video>
+![Nema video](docs/videos/nema-video.gif)
 
 ### Smart bin look
 
