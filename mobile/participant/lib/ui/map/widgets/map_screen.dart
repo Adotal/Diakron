@@ -1,0 +1,445 @@
+import 'dart:typed_data';
+
+import 'package:diakron_participant/models/segregator/segregator.dart';
+import 'package:diakron_participant/ui/core/themes/colors.dart';
+import 'package:diakron_participant/ui/map/view_models/map_viewmodel.dart';
+import 'package:diakron_participant/ui/map/widgets/location_card.dart';
+import 'package:diakron_participant/ui/map/widgets/map_controls.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+
+class MapScreen extends StatefulWidget {
+  const MapScreen({super.key, required this.viewModel});
+  final MapViewModel viewModel;
+
+  @override
+  State<StatefulWidget> createState() => _MapScreenState();
+}
+
+class _MapScreenState extends State<MapScreen> {
+  late MapboxMap mapboxMap;
+  PointAnnotationManager? pointManager;
+  // Diccionario para vincular el ID del marcador en el mapa con los datos del Segregador
+  final Map<String, Segregator> _markerMap = {};
+
+  CameraOptions camera = CameraOptions(
+    center: Point(
+      coordinates: Position(-103.348821, 20.671956), // Guadalajara
+    ),
+    zoom: 13,
+    bearing: 0,
+    pitch: 0,
+  );
+
+  Future<void> _onMapCreated(MapboxMap mapboxMap) async {
+    this.mapboxMap = mapboxMap;
+    // For markers creation as Annotations
+    pointManager = await mapboxMap.annotations.createPointAnnotationManager();
+
+    _loadMarkers();
+  }
+
+  @override
+Widget build(BuildContext context) {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final accessToken = dotenv.get('MAPBOX_ACCESS_TOKEN');
+  MapboxOptions.setAccessToken(accessToken);
+
+  return Scaffold(
+    backgroundColor: AppColors.backgroundDiakron,
+
+    body: ListenableBuilder(
+      listenable: widget.viewModel,
+      builder: (context, _) {
+
+        if (pointManager != null &&
+            !widget.viewModel.load.running) {
+          _loadMarkers();
+        }
+
+        return Column(
+          children: [
+
+            // HEADER
+            _buildHeader(),
+
+            // CONTENT
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF7F8FA),
+                ),
+
+                child: Column(
+                  children: [
+
+                    // CONTROLS
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        20,
+                        20,
+                        20,
+                        15,
+                      ),
+                      child: MapControls(
+                        isMapSelected:
+                            widget.viewModel.isMapSelected,
+
+                        showSegregadores:
+                            widget.viewModel.showSegregadores,
+
+                        onToggleViewMode: () =>
+                            widget.viewModel.toggleViewMode(),
+
+                        onToggleLocationType: () =>
+                            widget.viewModel.toggleLocationType(),
+                      ),
+                    ),
+
+                    // MAP/LIST
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+
+                        child: widget.viewModel.load.running
+                            ? const Center(
+                                child:
+                                    CircularProgressIndicator(),
+                              )
+                            : widget.viewModel.isMapSelected
+                                ? _buildMapViewWidget()
+                                : _buildLocationListView(),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    ),
+  );
+}
+
+Widget _buildHeader() {
+  final topPadding = MediaQuery.of(context).padding.top;
+
+  return Container(
+    width: double.infinity,
+
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          AppColors.greenDiakron4,
+          AppColors.greenDiakron1,
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    ),
+
+    child: Padding(
+      padding: EdgeInsets.fromLTRB(
+        20,
+        topPadding + 20,
+        20,
+        24,
+      ),
+
+      child: Row(
+        mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
+
+        children: [
+
+          Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+
+            children: const [
+
+              Text(
+                "Puntos de reciclaje",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+
+              SizedBox(height: 6),
+
+              Text(
+                "Encuentra segregadores cercanos",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white70,
+                ),
+              ),
+            ],
+          ),
+
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.18),
+              borderRadius:
+                  BorderRadius.circular(14),
+            ),
+
+            child: IconButton(
+              icon: const Icon(
+                Icons.info_outline,
+                color: Colors.white,
+              ),
+              onPressed: () =>
+                  _showLegendDialog(context),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+  // WIDGET: Map
+ Widget _buildMapViewWidget() {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(28),
+
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.08),
+          blurRadius: 20,
+          offset: const Offset(0, 8),
+        ),
+      ],
+    ),
+
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(28),
+
+      child: MapWidget(
+        cameraOptions: camera,
+        onMapCreated: _onMapCreated,
+      ),
+    ),
+  );
+}
+
+  // WIDGET: list
+  Widget _buildLocationListView() {
+    return ListView.builder(
+      padding: const EdgeInsets.only(top: 10),
+      itemCount: widget.viewModel.segregators.length,
+      itemBuilder: (context, index) {
+        final segregator = widget.viewModel.segregators[index];
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: LocationCard(
+            description: segregator.description!,
+            bin: segregator.bins,
+            isConnected: segregator.isActive,
+            // avatarUrl: segregator.avatarUrl,
+            onTap: () => _showSegregatorDetails(segregator),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _loadMarkers() async {
+    if (pointManager == null) return;
+
+    // Clear previous values
+    await pointManager!.deleteAll();
+    _markerMap.clear();
+
+    pointManager!.tapEvents(
+      onTap: (annotation) {
+        final segregator = _markerMap[annotation.id];
+        if (segregator != null) {
+          _showSegregatorDetails(segregator);
+        }
+        return true; // Retornamos true para indicar que manejamos el clic
+      },
+    );
+
+    final locations = widget.viewModel.segregators;
+    if (locations.isEmpty) return;
+
+    // Load the image from assets
+    final ByteData bytesImgActive = await rootBundle.load(
+      'assets/symbols/recycling_green.png',
+    );
+    final ByteData bytesImgInactive = await rootBundle.load(
+      'assets/symbols/recycling_gray.png',
+    );
+    final Uint8List imageDataActive = bytesImgActive.buffer.asUint8List();
+    final Uint8List imageDataInactive = bytesImgInactive.buffer.asUint8List();
+
+    for (var loc in locations) {
+      final point = Point(coordinates: Position(loc.longitude!, loc.latitude!));
+
+      final annotation = await pointManager!.create(
+        PointAnnotationOptions(
+          geometry: point,
+          image: loc.isActive ? imageDataActive : imageDataInactive,
+          iconSize: 0.1, // Ajusta el tamaño de tu pin aquí
+        ),
+      );
+      // Guardamos la relación: ID del Pin -> Datos del Segregador
+      _markerMap[annotation.id] = loc;
+    }
+  }
+
+  void _showSegregatorDetails(Segregator loc) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Estado
+              Row(
+                children: [
+                  Icon(
+                    loc.isActive ? Icons.check_circle : Icons.error,
+                    color: loc.isActive ? AppColors.greenDiakron1 : Colors.red,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    loc.isActive ? 'Operativo' : 'Sin conexión',
+                    style: TextStyle(
+                      color: loc.isActive
+                          ? AppColors.greenDiakron1
+                          : Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+
+              // Nombre/Descripción
+              Text(
+                loc.description ?? 'Punto de recolección',
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Niveles de llenado
+              const Text(
+                'Niveles de llenado:',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: loc.bins
+                    .map(
+                      (b) => Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Text(
+                          '${b.fillingPercentage}% ${b.wasteType}',
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const SizedBox(height: 30),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // Función principal para mostrar el diálogo
+  void _showLegendDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Leyenda del Mapa',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: SingleChildScrollView(
+            // Por si la pantalla es muy pequeña
+            child: Column(
+              mainAxisSize: MainAxisSize
+                  .min, // Para que el diálogo no ocupe toda la pantalla
+              children: [
+                _buildLegendItem(
+                  'assets/symbols/recycling_green.png',
+                  'Segregador disponible',
+                ),
+                const SizedBox(height: 15),
+                _buildLegendItem(
+                  'assets/symbols/recycling_gray.png',
+                  'Segregador Sin conexión',
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(), // Cierra el diálogo
+              child: const Text('Cerrar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Widget auxiliar para crear cada fila de la leyenda (Imagen + Texto)
+  Widget _buildLegendItem(String imagePath, String description) {
+    return Row(
+      children: [
+        // Asegúrate de que las imágenes existan en tu pubspec.yaml
+        Image.asset(
+          imagePath,
+          width: 35, // Ajusta el tamaño de la imagen en la leyenda
+          height: 35,
+        ),
+        const SizedBox(width: 15),
+        Expanded(
+          child: Text(description, style: const TextStyle(fontSize: 16)),
+        ),
+      ],
+    );
+  }
+}

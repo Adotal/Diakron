@@ -1,0 +1,13 @@
+{
+    "@@locale": "en",
+    "helloWorld": "Hello World!",
+    "password": "Password",
+    "signUp": "Sign Up!",
+    "login": "Log in",
+    "wantToJoinUs": "¿Want to join us?",
+    "forgotYourPassword": "Forgot your password?",
+    "email": "E-mail",
+    "tryAgain": "Try again",
+    "keepLogged": "Keep logged",
+    "termsAndConditions": "Terms and conditions"
+}

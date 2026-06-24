@@ -1,0 +1,44 @@
+#pragma once
+
+enum class SystemState
+{   
+    INIT,
+    IDLE,
+
+    WAITING_OBJECT,
+
+    OPENING_DOOR,
+    WAITING_INSERT,
+    WAITING_CLEAR,
+    CLOSING_DOOR,
+
+    CAPTURING,
+    CLASSIFYING,
+    WAITING_NEXT_ITEM,
+
+    MOVING_TO_METAL,
+    MOVING_TO_PLASTIC,
+    MOVING_TO_PAPER,
+    MOVING_TO_GLASS,
+
+    RETURNING_HOME,
+
+    HOMING,
+
+    RUNNING,
+
+    ERROR_STATE,
+    RELEASING_TRASH,
+    BOOT,
+    ESTOP
+};
+
+enum class SystemError
+{
+    NONE,
+    NOT_HOMED,
+    LIMIT_HIT,
+    MOTOR_FAULT,
+    UNKNOWN_COMMAND
+};
+

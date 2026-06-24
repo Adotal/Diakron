@@ -1,0 +1,36 @@
+{
+  "name": "diakron-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adotal/diakron-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Adotal/diakron-backend/issues"
+  },
+  "homepage": "https://github.com/Adotal/diakron-backend#readme",
+  "dependencies": {
+    "@gradio/client": "2.0.2",
+    "@noble/ed25519": "^3.0.0",
+    "@noble/hashes": "^2.0.1",
+    "@supabase/supabase-js": "^2.103.0",
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.1",
+    "express": "^4.21.0",
+    "firebase-admin": "^13.10.0",
+    "mercadopago": "^2.12.0",
+    "multer": "^2.0.2",
+    "uuid": "^14.0.0",
+    "ws": "^8.20.0"
+  }
+}

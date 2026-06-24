@@ -1,0 +1,4 @@
+node_modules/
+.env
+test/credentials.txt
+diakron-mx-firebase-adminsdk.json

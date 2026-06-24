@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DiakronHMI</string>
+    <string name="residuos_ingresados">RESIDUOS INGRESADOS: %d</string>
+    <string name="timer_format">0m %ds</string>
+</resources>

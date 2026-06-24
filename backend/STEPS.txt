@@ -1,0 +1,60 @@
+STEPS.txt
+
+// CREATE REPOSITORY AND RENDER ACCOUNT
+// CREATE WEB SERVICE > SELECT REPOSITORY
+// SELECT FREE PLAN
+// BUILD COMMAND: npm install
+// START COMMAND: node index.js
+
+
+// CLEAN INSTALLATION
+npm install
+npm install @noble/ed25519
+npm install @noble/hashes
+
+//------------------------------TEST IMAGES----------------------------------
+// LOCAL
+curl -X POST --header "Content-Type: image/jpeg" --data-binary "@test/test.jpg" http://localhost:3000/analyze
+
+// RENDER.COM
+curl -X POST --header "Content-Type: image/jpeg" --data-binary "@test/test.jpg" https://diakron-backend.onrender.com/analyze
+
+
+//------------------------------TEST QR VERIFY---------------------------
+// LOCAL
+curl -X POST --header "Content-Type: application/octet-stream" \
+-H "Authorization: Bearer JWT_TOKEN" \
+--data-binary @test/qr_payload.bin http://localhost:3000/verify-qr
+
+curl -X POST http://localhost:3000/gen-qr -H "Content-Type: application/json" \
+-H "Authorization: Bearer JWT_TOKEN" \
+-d '{"couponId":19}'
+
+
+// RENDER
+curl -X POST --header "Content-Type: application/octet-stream" --data-binary @test/qr_payload.bin https://diakron-backend.onrender.com/verify-qr
+
+//--------------------------- TEST QR GEN-----------------------
+// LOCAL
+curl -X POST http://localhost:3000/gen-qr -H "Content-Type: application/json" \
+-H "Authorization: Bearer JWT_TOKEN" \
+-d '{"couponId":19}'
+
+// RENDER
+curl -X POST https://diakron-backend.onrender.com/gen-qr -H "Content-Type: application/json" \
+-H "Authorization: Bearer JWT_TOKEN" \
+-d '{"couponId":19}'
+
+//---------------------VERIFY PARTICIPANT QR--------------------
+curl -X POST --header "Content-Type: application/octet-stream" --data-binary @test/qr_payload_participant_check_signature.bin http://localhost:3000/verify-qr-participant
+
+//-----------------------TEST UPDATE LOCATION----------------------
+curl -X POST https://diakron-backend.onrender.com/update-location -H "Content-Type: application/json" \
+-d '{"userId":19, }'
+
+//------------------------------mercadopago----------------------------
+curl -X POST \
+    'http://localhost:3000/payment-ccenter'\
+    -H 'Content-Type: application/json' \
+
+// The webhook should be set in MercadoPago: webhook notifications and set to https://BACKEND_URL/mp-webhook

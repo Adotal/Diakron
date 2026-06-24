@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/collectionactivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0C5E3A"
+    android:padding="16dp">
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="#EAF6E9"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:weightSum="10">
+
+            <!-- ========================= -->
+            <!-- PANEL IZQUIERDO -->
+            <!-- ========================= -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="3.2"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:layout_width="160dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/diakron_lt_green"
+                        android:scaleType="fitCenter"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="Recolección\nInteligente"
+                        android:textAlignment="center"
+                        android:textColor="#0B6B42"
+                        android:textSize="26sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Verifica y vacía\nlos contenedores"
+                        android:textAlignment="center"
+                        android:textColor="#2E7D32"
+                        android:textSize="15sp"/>
+
+                    <VideoView
+                        android:id="@+id/imgHeader"
+                        android:layout_width="220dp"
+                        android:layout_height="220dp"
+                        android:layout_marginTop="24dp"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- ========================= -->
+            <!-- PANEL DERECHO -->
+            <!-- ========================= -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_weight="6.8"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp">
+
+                    <!-- HEADER -->
+                    <LinearLayout
+                        android:id="@+id/headerContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="12dp"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@android:drawable/ic_menu_manage"
+                            app:tint="#2E7D32"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Modo Recolector"
+                            android:textColor="#1B5E20"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/bg_circle_green"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:text="Preparado para vaciado"
+                            android:textColor="#757575"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tvClock"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="--:--"
+                            android:textColor="#1B5E20"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <!-- TITULO -->
+                    <TextView
+                        android:id="@+id/txtTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:text="INICIAR RECOLECCIÓN"
+                        android:textColor="#1B5E20"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/headerContainer"/>
+
+                    <!-- DESCRIPCION -->
+                    <TextView
+                        android:id="@+id/tvDesc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:gravity="center"
+                        android:text="Vacía únicamente los contenedores indicados y verifica que las compuertas queden correctamente selladas."
+                        android:textColor="#757575"
+                        android:textSize="15sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtTitle"/>
+
+                    <!-- TARJETA DE MATERIALES -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/materialCard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        app:cardBackgroundColor="#F4FBF4"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvDesc">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="20dp">
+
+                            <!-- TITULO -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_rounded_light_green"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingLeft="14dp"
+                                android:paddingTop="8dp"
+                                android:paddingRight="14dp"
+                                android:paddingBottom="8dp">
+
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:src="@android:drawable/ic_menu_info_details"
+                                    app:tint="#1B5E20"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="Contenedores a vaciar"
+                                    android:textColor="#1B5E20"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"/>
+                            </LinearLayout>
+
+                            <!-- MATERIALES -->
+                            <TextView
+                                android:id="@+id/tvMaterials"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="18dp"
+                                android:gravity="center"
+                                android:text="METAL • PLÁSTICO"
+                                android:textColor="#0C5E3A"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+
+                            <!-- STATUS -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/bg_rounded_light_green"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingLeft="18dp"
+                                android:paddingTop="10dp"
+                                android:paddingRight="18dp"
+                                android:paddingBottom="10dp">
+
+                                <View
+                                    android:layout_width="8dp"
+                                    android:layout_height="8dp"
+                                    android:background="@drawable/bg_circle_green"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:text="NOTA: Los contenedores se bloquean una vez se vuelva a colocar en su lugar."
+                                    android:textColor="#1B5E20"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:textAlignment="center"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- BOTON -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/btnFinalize"
+                        android:layout_width="match_parent"
+                        android:layout_height="78dp"
+                        android:layout_marginBottom="14dp"
+                        android:background="@drawable/bg_btn_recolector"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="24dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <ImageView
+                            android:id="@+id/ic_finish"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:padding="12dp"
+                            android:src="@android:drawable/checkbox_on_background"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="#FFFFFF"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/ic_arrow"
+                            app:layout_constraintStart_toEndOf="@id/ic_finish"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Finalizar Recolección"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textStyle="bold"/>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/ic_arrow"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:background="@drawable/bg_circle_white_alpha"
+                            android:padding="4dp"
+                            android:src="@android:drawable/ic_media_play"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="#FFFFFF"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
