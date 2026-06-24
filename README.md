@@ -47,6 +47,7 @@ We offer 5 cross-platform mobile applications to integrate a circular waste mana
   - [Table of Contents](#table-of-contents)
   - [Demo](#demo)
   - [Architecture](#architecture)
+  - [System Flow](#system-flow)
   - [Features](#features)
   - [Repository Structure](#repository-structure)
   - [Tech Stack](#tech-stack)
@@ -94,6 +95,17 @@ HMI Android is a native mobile app written in Java to interact with ESP32-CAM vi
 
 The Mobile apps can fetch data directly from Database and make QR codes generation and verification through Node.js server.
 
+## System Flow
+
+1. User deposits waste.
+2. ESP32-CAM captures image.
+3. Image is sent to backend.
+4. Hugging Face classifies material.
+5. Sensor data validates classification.
+6. Material is routed to corresponding bin.
+7. User receives reward points.
+8. Points can be redeemed in partner stores.
+
 ## Features
 
 - Automatic waste classification (plastic, paper/cardboard, metal, glass)
@@ -107,7 +119,7 @@ The Mobile apps can fetch data directly from Database and make QR codes generati
 - Cross-platform apps on Flutter following MVVM pattern
 
 ## Repository Structure
-```bash
+```text
 Diakron
 ├── backend (Node.js server)
 ├── docs 
