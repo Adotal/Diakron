@@ -1,5 +1,11 @@
 # Diakron
 
+![Platform](https://img.shields.io/badge/Platform-IoT-blue)
+![ESP32](https://img.shields.io/badge/ESP32-CAM-red)
+![Flutter](https://img.shields.io/badge/Flutter-Mobile-blue)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-green)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+
 ![Diakron banner](./docs/photos/diakron-banner.png)
 
 ## Project Summary
